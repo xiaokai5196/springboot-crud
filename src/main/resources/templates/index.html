@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="bookmark" th:href="@{/favicon.ico}"/>
+    <title>首页</title>
+</head>
+<body>
+<div align="center" style="margin-top: 50px"><h2>Welcom to index！</h2></div>
+<div align="center" style="margin-top: 20px">
+    <table>
+        <tr>
+            <td><h4>1.</h4></td>
+            <td><a href="mep" th:href="@{/view/empList}">员工列表</a></td>
+        </tr>
+        <tr>
+            <td><h4>2.</h4></td>
+            <td><a href="dept" th:href="@{/view/deptList}">部门列表</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

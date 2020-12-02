@@ -1,0 +1,98 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    #允许执行多条sql，在url后添加&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/emp?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: zxk@5196
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #连接池配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    #配置监控统计拦截的filters
+    filters: stat,wall
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    host: localhost
+    port: 6379
+    password: zxk@5196
+
+# mybatis配置
+mybatis:
+  type-aliases-package: com.dict.emp.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    jdbc-type-for-null: null
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    lazy-loading-enabled: true
+#分页插件配置
+pagehelper:
+  helper-dialect: mysql
+
+#日志配置
+logging:
+  level:
+    #不同目录可配置不同的日志级别
+    com.dict.emp.mapper: debug
+    org.springframework.web: info
+  #日志文件
+  file:
+    name: crud.log
+
+#yml属性示例
+dept:
+  deptno: 50
+  dname: PRODUCT
+  loc: CHANGSHA
+  salgrade:
+    grade: 1
+    losal: 5000
+    hisal: 20000
+  empList:
+    - empno: 1
+      ename: zhangsan
+      job: WORK1
+    - empno: 2
+      ename: LISI
+      job: WORK2
+
+---
+server:
+  port: 8088
+  servlet:
+    context-path: /crud
+spring:
+  profiles: local
+---
+server:
+  port: 8089
+  servlet:
+    context-path: /crud
+spring:
+  profiles: dev
+
+
+
+
+
+
+

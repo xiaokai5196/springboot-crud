@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="bookmark" th:href="@{/favicon.ico}"/>
+    <title>emp列表</title>
+</head>
+<!--修改页面后ctrl+F9，可让idea重新编译页面-->
+<body>
+    <div style="margin-top: 20px" align="center">
+        <h2>员工列表</h2>
+    </div>
+    <div style="margin-top: 20px">
+        <table border="1" align="center" >
+            <thead>
+                <tr>
+                    <td align="center">员工编号</td>
+                    <td align="center">员工姓名</td>
+                    <td align="center">职位</td>
+                    <td align="center">上级编号</td>
+                    <td align="center">入职日期</td>
+                    <td align="center">基本薪资</td>
+                    <td align="center">奖金</td>
+                    <td align="center">部门编号</td>
+                </tr>
+            </thead>
+            <tr th:each="emp:${emps}">
+                <td align="center" th:text="${emp.empno}"></td>
+                <td align="center" th:text="${emp.ename}"></td>
+                <td align="center" th:text="${emp.job}"></td>
+                <td align="center" th:text="${emp.mgr}"></td>
+                <td align="center" th:text="${#dates.format(emp.hiredate, 'yyyy-MM-dd')}"></td>
+                <td align="center" th:text="${emp.sal}"></td>
+                <td align="center" th:text="${emp.comm}==null?'0':${emp.comm}"></td>
+                <td align="center" th:text="${emp.deptno}"></td>
+            </tr>
+        </table>
+    </div>
+    <div align="center" style="margin-top: 20px"><a href="index" th:href="@{/}">返回首页</a></div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="bookmark" th:href="@{/favicon.ico}"/>
+    <title>dept列表</title>
+</head>
+<!--修改页面后ctrl+F9，可让idea重新编译页面-->
+<body>
+    <div style="margin-top: 20px" align="center">
+        <h2>部门列表</h2>
+    </div>
+    <div style="margin-top: 20px">
+        <table border="1" align="center" >
+            <thead>
+            <tr>
+                <td align="center">部门编号</td>
+                <td align="center">部门名称</td>
+                <td align="center">部门地址</td>
+            </tr>
+            </thead>
+            <tr th:each="dept:${depts}">
+                <td align="center" th:text="${dept.deptno}"></td>
+                <td align="center" th:text="${dept.dname}"></td>
+                <td align="center" th:text="${dept.loc}"></td>
+            </tr>
+        </table>
+    </div>
+    <div align="center" style="margin-top: 20px"><a href="index" th:href="@{/}">返回首页</a></div>
+</body>
+</html>

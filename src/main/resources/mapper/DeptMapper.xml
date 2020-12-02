@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dict.emp.mapper.DeptMapper">
+  <resultMap id="BaseResultMap" type="com.dict.emp.entity.Dept">
+    <id column="deptno" jdbcType="INTEGER" property="deptno" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="loc" jdbcType="VARCHAR" property="loc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    deptno, dname, loc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dept
+    where deptno = #{deptno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dept
+    where deptno = #{deptno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dict.emp.entity.Dept">
+    insert into dept (deptno, dname, loc
+      )
+    values (#{deptno,jdbcType=INTEGER}, #{dname,jdbcType=VARCHAR}, #{loc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dict.emp.entity.Dept">
+    insert into dept
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptno != null">
+        deptno,
+      </if>
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="loc != null">
+        loc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptno != null">
+        #{deptno,jdbcType=INTEGER},
+      </if>
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="loc != null">
+        #{loc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dict.emp.entity.Dept">
+    update dept
+    <set>
+      <if test="dname != null">
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="loc != null">
+        loc = #{loc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where deptno = #{deptno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dict.emp.entity.Dept">
+    update dept
+    set dname = #{dname,jdbcType=VARCHAR},
+      loc = #{loc,jdbcType=VARCHAR}
+    where deptno = #{deptno,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectDeptList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dept
+  </select>
+
+  <resultMap id="deptInfoResultMap" type="com.dict.emp.entity.vo.DeptInfo">
+    <id column="deptno" jdbcType="INTEGER" property="deptno" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="loc" jdbcType="VARCHAR" property="loc" />
+    <collection property="empList" ofType="emp" >
+      <id column="empno" jdbcType="INTEGER" property="empno"/>
+      <result column="ename" jdbcType="VARCHAR" property="ename" />
+      <result column="job" jdbcType="VARCHAR" property="job" />
+      <result column="mgr" jdbcType="INTEGER" property="mgr" />
+      <result column="hiredate" jdbcType="DATE" property="hiredate" />
+      <result column="sal" jdbcType="REAL" property="sal" />
+      <result column="comm" jdbcType="REAL" property="comm" />
+      <result column="deptno" jdbcType="INTEGER" property="deptno" />
+    </collection>
+  </resultMap>
+  <select id="selectDeptInfo" parameterType="java.lang.Integer" resultMap="deptInfoResultMap">
+    select
+    d.*,
+    e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, e.comm
+    from dept d left join emp e on d.deptno = e.deptno
+    <where>
+      <if test="deptno != null">
+        d.deptno = #{deptno}
+      </if>
+    </where>
+  </select>
+</mapper>
