@@ -250,9 +250,199 @@
     where deptno = #{deptno}
   </select>
 
-  <select id="AAA">
-    select * from user where age &gt;= 18
+  <select id="selectDeptCount" parameterType="java.lang.Integer" resultType="java.util.Map">
+    select
+    d.deptno, d.dname, d.loc,
+    count(*) "total",
+    round(avg(sal + ifnull(comm, 0)),2) "salary"
+    from emp e left join dept d on e.deptno = d.deptno
+    <where>
+      <if test="deptno != null">
+        e.deptno = #{deptno}
+      </if>
+    </where>
+    group by e.deptno
+    order by e.deptno
   </select>
+
+  <insert id="insertOrUpdate" parameterType="emp">
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empno != null">
+        empno,
+      </if>
+      <if test="ename != null">
+        ename,
+      </if>
+      <if test="job != null">
+        job,
+      </if>
+      <if test="mgr != null">
+        mgr,
+      </if>
+      <if test="hiredate != null">
+        hiredate,
+      </if>
+      <if test="sal != null">
+        sal,
+      </if>
+      <if test="comm != null">
+        comm,
+      </if>
+      <if test="deptno != null">
+        deptno,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="empno != null">
+        #{empno},
+      </if>
+      <if test="ename != null">
+        #{ename},
+      </if>
+      <if test="job != null">
+        #{job},
+      </if>
+      <if test="mgr != null">
+        #{mgr},
+      </if>
+      <if test="hiredate != null">
+        #{hiredate},
+      </if>
+      <if test="sal != null">
+        #{sal},
+      </if>
+      <if test="comm != null">
+        #{comm},
+      </if>
+      <if test="deptno != null">
+        #{deptno},
+      </if>
+    </trim>
+    on duplicate key update
+    <trim suffixOverrides=",">
+      <if test="ename != null">
+        ename = #{ename},
+      </if>
+      <if test="job != null">
+        job = #{job},
+      </if>
+      <if test="mgr != null">
+        mgr = #{mgr},
+      </if>
+      <if test="hiredate != null">
+        hiredate = #{hiredate},
+      </if>
+      <if test="sal != null">
+        sal = #{sal},
+      </if>
+      <if test="comm != null">
+        comm = #{comm},
+      </if>
+      <if test="deptno != null">
+        deptno = #{deptno},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertByJob" parameterType="emp">
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empno != null">
+        empno,
+      </if>
+      <if test="ename != null">
+        ename,
+      </if>
+      <if test="job != null">
+        job,
+      </if>
+      <if test="mgr != null">
+        mgr,
+      </if>
+      <if test="hiredate != null">
+        hiredate,
+      </if>
+      <if test="sal != null">
+        sal,
+      </if>
+      comm,
+      <if test="deptno != null">
+        deptno,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="empno != null">
+        #{empno},
+      </if>
+      <if test="ename != null">
+        #{ename},
+      </if>
+      <if test="job != null">
+        #{job},
+      </if>
+      <if test="mgr != null">
+        #{mgr},
+      </if>
+      <if test="hiredate != null">
+        #{hiredate},
+      </if>
+      <if test="sal != null">
+        #{sal},
+      </if>
+      <choose>
+        <when test="job == 'SALESMAN'">
+          1000,
+        </when>
+        <otherwise>
+          null,
+        </otherwise>
+      </choose>
+      <if test="deptno != null">
+        #{deptno},
+      </if>
+    </trim>
+  </insert>
+
+
+  <resultMap id="empDetailResultMap" type="com.dict.emp.entity.vo.EmpDetail">
+    <id column="empno" jdbcType="INTEGER" property="empno"/>
+    <result column="ename" jdbcType="VARCHAR" property="ename"/>
+    <result column="job" jdbcType="VARCHAR" property="job"/>
+    <result column="mgr" jdbcType="INTEGER" property="mgr"/>
+    <result column="hiredate" jdbcType="DATE" property="hiredate"/>
+    <result column="sal" jdbcType="REAL" property="sal"/>
+    <result column="comm" jdbcType="REAL" property="comm"/>
+    <association property="dept" javaType="com.dict.emp.entity.Dept">
+      <id column="deptno" jdbcType="INTEGER" property="deptno" />
+      <result column="dname" jdbcType="VARCHAR" property="dname" />
+      <result column="loc" jdbcType="VARCHAR" property="loc" />
+    </association>
+    <association property="salgrade" javaType="com.dict.emp.entity.Salgrade">
+      <id column="grade" jdbcType="INTEGER" property="grade" />
+      <result column="losal" jdbcType="INTEGER" property="losal" />
+      <result column="hisal" jdbcType="INTEGER" property="hisal" />
+    </association>
+  </resultMap>
+  <select id="selectDetailByIdName" parameterType="com.dict.emp.entity.Emp" resultMap="empDetailResultMap">
+    select
+    e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, e.comm,
+    d.deptno, d.dname, d.loc,
+    s.grade, s.losal, s.hisal
+    from emp e
+    left join dept d on e.deptno = d.deptno
+    left join salgrade s on e.sal between s.losal and s.hisal
+    where
+    <choose>
+      <when test="empno != null">
+        empno = #{empno}
+      </when>
+      <when test="ename != null">
+        ename = #{ename}
+      </when>
+    </choose>
+  </select>
+
 
 
 

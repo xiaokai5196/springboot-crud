@@ -2,13 +2,13 @@ package com.dict.emp.mapper;
 
 import com.dict.emp.entity.vo.DeptInfo;
 import com.dict.emp.entity.Emp;
+import com.dict.emp.entity.vo.EmpDetail;
 import com.dict.emp.entity.vo.EmpInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public interface EmpMapper {
     //根据主键删除
     int deleteByPrimaryKey(Integer empno);
@@ -52,6 +52,14 @@ public interface EmpMapper {
 
     //根据部门编号查员工列表
     List<Emp> selectEmpListByDeptno(Integer deptno);
+
+    List<Map<String, Object>> selectDeptCount(Integer deptno);
+
+    int insertOrUpdate(Emp emp);
+
+    int insertByJob(Emp emp);
+
+    EmpDetail selectDetailByIdName(Emp emp);
 
 
 

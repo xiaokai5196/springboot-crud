@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dict.emp.common.ReturnUtil;
 import com.dict.emp.entity.vo.DeptInfo;
 import com.dict.emp.entity.Emp;
+import com.dict.emp.entity.vo.EmpDetail;
 import com.dict.emp.entity.vo.EmpInfo;
 import com.dict.emp.service.EmpService;
 import com.github.pagehelper.PageInfo;
@@ -145,6 +146,70 @@ public class EmpController {
     public JSONObject selectDeptInfoList(@RequestParam Integer deptno){
         List<DeptInfo> deptInfos = empService.selectDeptInfoList(deptno);
         return ReturnUtil.returnSuccess("success", deptInfos);
+    }
+
+    /**
+     * 查询部门信息，部门员工数量及部门平均薪资
+     * @param params deptno
+     * @return
+     */
+    @GetMapping("/selectDeptCount")
+    public JSONObject selectDeptCount(@RequestBody JSONObject params){
+        Integer deptno = params.getInteger("deptno");
+        List<Map<String, Object>> maps = empService.selectDeptCount(deptno);
+        return ReturnUtil.returnSuccess("success", maps);
+    }
+
+    /**
+     * 动态插入员工，如果员工已存在则更新，不存在则插入
+     * 数据表必须有一个唯一索引才可，这里是主键empno
+     * @param emp
+     * @return
+     */
+    @PostMapping("/insertOrUpdate")
+    public JSONObject insertOrUpdate(@RequestBody Emp emp){
+        try {
+            empService.insertOrUpdate(emp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnUtil.returnError("fail");
+        }
+        return ReturnUtil.returnSuccess("success");
+    }
+
+
+    /**
+     * 条件插入
+     * 根据员工的job插入不同的comm值
+     * 当job=SALESMAN时，comm=1000，其它为null
+     * @param emp
+     * @return
+     */
+    @PostMapping("/insertByJob")
+    public JSONObject insertByJob(@RequestBody Emp emp){
+        try {
+            empService.insertByJob(emp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnUtil.returnError("fail");
+        }
+        return ReturnUtil.returnSuccess("success");
+    }
+
+    /**
+     * 根据员工编号或姓名查询员工详细信息，包含基本信息，部门信息，薪资等级信息
+     * @param emp empno ename
+     * @return
+     */
+    @GetMapping("/selectDetailByIdName")
+    public JSONObject selectDetailById(@RequestBody Emp emp){
+        Integer empno = emp.getEmpno();
+        String ename = emp.getEname();
+        if (empno == null && ename == null){
+            return ReturnUtil.returnError("参数为空");
+        }
+        EmpDetail empDetail = empService.selectDetailByIdName(emp);
+        return ReturnUtil.returnSuccess("success", empDetail);
     }
 
 

@@ -28,7 +28,7 @@ public class EmpDetail implements Serializable {
 
     private Dept dept;
 
-    private Salgrade salGrade;
+    private Salgrade salgrade;
 
     public Integer getEmpno() {
         return empno;
@@ -94,12 +94,12 @@ public class EmpDetail implements Serializable {
         this.dept = dept;
     }
 
-    public Salgrade getSalGrade() {
-        return salGrade;
+    public Salgrade getSalgrade() {
+        return salgrade;
     }
 
-    public void setSalGrade(Salgrade salGrade) {
-        this.salGrade = salGrade;
+    public void setSalgrade(Salgrade salgrade) {
+        this.salgrade = salgrade;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class EmpDetail implements Serializable {
                 ", sal=" + sal +
                 ", comm=" + comm +
                 ", dept=" + dept +
-                ", salGrade=" + salGrade +
+                ", salgrade=" + salgrade +
                 '}';
     }
 }

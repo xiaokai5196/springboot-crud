@@ -2,6 +2,7 @@ package com.dict.emp.service;
 
 import com.dict.emp.entity.vo.DeptInfo;
 import com.dict.emp.entity.Emp;
+import com.dict.emp.entity.vo.EmpDetail;
 import com.dict.emp.entity.vo.EmpInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -29,6 +30,14 @@ public interface EmpService {
     EmpInfo selectEmpInfoById(Integer empno);
 
     List<DeptInfo> selectDeptInfoList(Integer deptno);
+
+    List<Map<String, Object>> selectDeptCount(Integer deptno);
+
+    int insertOrUpdate(Emp emp);
+
+    int insertByJob(Emp emp);
+
+    EmpDetail selectDetailByIdName(Emp emp);
 
 
 

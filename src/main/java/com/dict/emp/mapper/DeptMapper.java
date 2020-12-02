@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface DeptMapper {
+
     int deleteByPrimaryKey(Integer deptno);
 
     int insert(Dept record);

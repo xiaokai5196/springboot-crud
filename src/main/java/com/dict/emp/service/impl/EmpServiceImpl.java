@@ -3,6 +3,7 @@ package com.dict.emp.service.impl;
 import com.dict.emp.common.RedisUtil;
 import com.dict.emp.entity.vo.DeptInfo;
 import com.dict.emp.entity.Emp;
+import com.dict.emp.entity.vo.EmpDetail;
 import com.dict.emp.entity.vo.EmpInfo;
 import com.dict.emp.mapper.EmpMapper;
 import com.dict.emp.service.EmpService;
@@ -98,5 +99,25 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public List<DeptInfo> selectDeptInfoList(Integer deptno) {
         return empMapper.selectDeptInfoList(deptno);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectDeptCount(Integer deptno) {
+        return empMapper.selectDeptCount(deptno);
+    }
+
+    @Override
+    public int insertOrUpdate(Emp emp) {
+        return empMapper.insertOrUpdate(emp);
+    }
+
+    @Override
+    public int insertByJob(Emp emp) {
+        return empMapper.insertByJob(emp);
+    }
+
+    @Override
+    public EmpDetail selectDetailByIdName(Emp emp) {
+        return empMapper.selectDetailByIdName(emp);
     }
 }
